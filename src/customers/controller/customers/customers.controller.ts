@@ -13,6 +13,8 @@ import {
   Post,
   Req,
   Res,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 
 @Controller('customers')
@@ -33,7 +35,6 @@ export class CustomersController {
       res.status(400).send({ msg: 'Customer not found!' });
     }
   }
-
   @Get('search/:id')
   searchCustomerById(@Param('id', ParseIntPipe) id: number) {
     const customer = this.CustomersService.findCustomerById(id);
@@ -47,6 +48,7 @@ export class CustomersController {
   }
 
   @Post('create')
+  @UsePipes(ValidationPipe)
   createCustomer(@Body() CreateCustomerDto: CreateCustomerDto) {
     //console.log(CreateCustomerDto);
     this.CustomersService.CreateCustomer(CreateCustomerDto);
